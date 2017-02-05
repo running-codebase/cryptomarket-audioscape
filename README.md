@@ -8,6 +8,7 @@ A background rain(.mp3|wav) and any number of thunder(.mp3|wav) files must be pr
 
 ##Dependencies
 afplay - audio player for osx
+
 python-poloniex - https://github.com/s4w3d0ff/python-poloniex for api requests on poloniex
 
 ## Installation
