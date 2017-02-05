@@ -1,11 +1,11 @@
 #!/usr/local/bin/python
 
+import sys
 import subprocess
 import time
 import pandas as pd
 import numpy as np
 from poloniex import Poloniex
-import pdb
 
 class RainPlayer():
 
@@ -37,7 +37,6 @@ class RainPlayer():
         trades = self._get_orders(self.ONEDAY)
         self.mean = trades.mean()
         self.std = trades.std() 
-        pdb.set_trace()
 
     def _get_orders(self, minutes):
         start_time = time.time() - minutes
@@ -45,7 +44,6 @@ class RainPlayer():
         try:
             temp = polo.marketTradeHist(self.PAIR, start_time, time.time())
             df = pd.DataFrame(temp)
-            pdb.set_trace()
             if len(df) > 0:
                 return pd.to_numeric(pd.Series(df["amount"]))
             else:
@@ -57,13 +55,13 @@ class RainPlayer():
     def _play_lightning(self, orders):
         for order in orders:
             step = int((order - self.mean) / (self.std / self.steps_per_std))
+            #print "step: " + str(step) + " amount: " + str(order)
             if step <= 0:
                 self._play_sound(self.thunders[0], self.thunder_vol)
             elif step < len(self.thunders) -1:
                 self._play_sound(self.thunders[step], self.thunder_vol)
             else: #no sound for this step
                 self._play_sound(self.thunders[-1], self.thunder_vol)
-                
             time.sleep(self.PERIOD_LENGTH /float(len(orders)))
 
     def _play_sound(self, filename, volume):
@@ -72,9 +70,11 @@ class RainPlayer():
 
 
 if __name__ == '__main__':
-    thunders = ['thunder.mp3',\
-                'recover.wav',\
-                'start.wav',\
-                'rest.wav']
-    rp = RainPlayer('rain.mp3', thunders)
-    rp.run()
+
+    if len(sys.argv) < 3:
+        print "usage python rain_player.py rain.mp3 thunder1.mp3 thunder2.mp3 ..."
+        print "minimum of rain audio and one thunder audio required"
+        exit()
+    else:
+        rp = RainPlayer(sys.argv[1], sys.argv[2:])
+        rp.run()
