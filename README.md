@@ -1,7 +1,7 @@
 # Cryptomarket Audioscape
 
-This script pulls the latest trade history for a particular trading pair on from Poloniex.
-It then maps those trades to audio files depending on how many standard deviations the amount is 
+This script simulates a thunderstorm by playing a rain track and pulling the latest trade history for a particular trading pair from Poloniex.
+It then maps those trades to different thunder audio files depending on how many standard deviations the amount is 
 away from the std of the last day of trading. 
 
 A background rain(.mp3|wav) and any number of thunder(.mp3|wav) files must be provided as source.
